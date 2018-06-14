@@ -1,7 +1,7 @@
 import { strictEqual } from 'assert';
 
 function suffixWithUnit(num: number): string {
-  let unit: '' | 'Kilo' | 'Mega' = '';
+  let unit: 'Kilo' | 'Mega';
   let res = `${num}`;
   let l: number;
   const floatPointPos = res.search(/\./);

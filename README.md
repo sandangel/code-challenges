@@ -57,7 +57,7 @@ try {
 
 ```ts
 // chal2.ts
-import { deepStrictEqual } from 'assert';
+import { deepStrictEqual, strictEqual } from 'assert';
 import { JSON_A, JSON_B, JSON_C } from './chal2_input';
 
 export function convertToJSON_B(json_a: any) {
@@ -75,8 +75,11 @@ export function convertToJSON_C(json_b: any) {
 }
 
 try {
-  deepStrictEqual(convertToJSON_B(JSON_A), JSON_B);
-  deepStrictEqual(convertToJSON_C(JSON_B), JSON_C);
+  const json_b = convertToJSON_B(JSON_A);
+  const json_c = convertToJSON_C(JSON_B);
+
+  deepStrictEqual(json_b, JSON_B);
+  strictEqual(JSON.stringify(json_c), JSON.stringify(JSON_C));
 } catch (error) {
   console.log(error);
 }
@@ -177,4 +180,110 @@ export const JSON_C = [
     }
   }
 ];
+```
+
+### Config:
+
+package.json
+
+```json
+{
+  "name": "zmp-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^10.3.3",
+    "ts-node": "^6.1.1",
+    "typescript": "^2.9.2"
+  }
+}
+```
+
+tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "moduleResolution": "node",
+    "types": ["node"],
+    "esModuleInterop": true
+  },
+  "include": ["*.ts"]
+}
+```
+
+### Challenge 2 - Bonus:
+
+```ts
+// chal2_bonus.ts
+import { JSON_A, JSON_B, JSON_C } from './chal2_input';
+import { deepStrictEqual, strictEqual } from 'assert';
+
+type Locker = { door: number; item: number; light: number; unlock: number; [key: string]: number };
+type JA = { [key: string]: number };
+type JB = { [id: string]: Locker };
+type JC = { message: string; signals: { [key: string]: number } };
+
+function convertToJSON_B(json_a: JA): JB {
+  const json_b: JB = {};
+  Object.keys(json_a).forEach(k => {
+    const [, id, prop] = /^locker_(\d+)_(.+)$/.exec(k)!;
+    if (json_b[id] === undefined) {
+      json_b[id] = {} as Locker;
+    }
+
+    json_b[id][prop] = json_a[k];
+  });
+
+  return json_b;
+}
+
+function convertToJSON_C(json_b: JB): JC[] {
+  let group = 2;
+  let member = 1;
+  const props: ('door' | 'item' | 'light' | 'unlock')[] = ['door', 'item'];
+  return Object.keys(json_b).reduce(
+    (prev, cur) => {
+      if (member === 1 || group === 1) {
+        member++;
+        const message = 'rx_locker_' + cur;
+        const signals: JC['signals'] = {};
+        props.forEach(prop => (signals[`locker_${cur}_${prop}`] = json_b[cur][prop]));
+
+        return [...prev, { message, signals }];
+      }
+
+      if (member >= group) {
+        member = 1;
+      }
+
+      const prevPos = prev.length - 1;
+      const prevItem = prev[prevPos];
+      prevItem.message = prevItem.message + cur;
+      props.forEach(prop => (prevItem.signals[`locker_${cur}_${prop}`] = json_b[cur][prop]));
+      return prev;
+    },
+    [] as JC[]
+  );
+}
+
+try {
+  const json_b = convertToJSON_B(JSON_A);
+  const json_c = convertToJSON_C(JSON_B);
+
+  deepStrictEqual(json_b, JSON_B);
+  strictEqual(JSON.stringify(json_c), JSON.stringify(JSON_C));
+} catch (error) {
+  console.log(error);
+}
 ```

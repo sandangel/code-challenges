@@ -1,4 +1,4 @@
-import { deepStrictEqual } from 'assert';
+import { deepStrictEqual, strictEqual } from 'assert';
 import { JSON_A, JSON_B, JSON_C } from './chal2_input';
 
 export function convertToJSON_B(json_a: any) {
@@ -16,8 +16,11 @@ export function convertToJSON_C(json_b: any) {
 }
 
 try {
-  deepStrictEqual(convertToJSON_B(JSON_A), JSON_B);
-  deepStrictEqual(convertToJSON_C(JSON_B), JSON_C);
+  const json_b = convertToJSON_B(JSON_A);
+  const json_c = convertToJSON_C(JSON_B);
+
+  deepStrictEqual(json_b, JSON_B);
+  strictEqual(JSON.stringify(json_c), JSON.stringify(JSON_C));
 } catch (error) {
   console.log(error);
 }

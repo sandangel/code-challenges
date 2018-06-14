@@ -28,21 +28,22 @@ function suffixWithUnit(num: number): string {
 
 function addFloatPoint(str: string, pos: number) {
   const charAtPos = str.charAt(pos);
-  return str.replace(charAtPos, `,${charAtPos}`);
+  const removeFloatPoint = str.replace(/\./g, '');
+  return removeFloatPoint.replace(charAtPos, `.${charAtPos}`);
 }
 
 try {
   strictEqual(suffixWithUnit(123), '123');
-  strictEqual(suffixWithUnit(1234), '1,234 Kilo');
-  strictEqual(suffixWithUnit(12345), '12,345 Kilo');
-  strictEqual(suffixWithUnit(12345.5), '12,345.5 Kilo');
-  strictEqual(suffixWithUnit(12345.45), '12,345.45 Kilo');
-  strictEqual(suffixWithUnit(12345), '12,345 Kilo');
-  strictEqual(suffixWithUnit(1234567.545), '1,234567.545 Mega');
-  strictEqual(suffixWithUnit(1234567.232), '1,234567.232 Mega');
-  strictEqual(suffixWithUnit(1234567.2), '1,234567.2 Mega');
-  strictEqual(suffixWithUnit(1234567), '1,234567 Mega');
-  strictEqual(suffixWithUnit(12345678), '12,345678 Mega');
+  strictEqual(suffixWithUnit(1234), '1.234 Kilo');
+  strictEqual(suffixWithUnit(12345), '12.345 Kilo');
+  strictEqual(suffixWithUnit(12345.5), '12.3455 Kilo');
+  strictEqual(suffixWithUnit(12345.45), '12.34545 Kilo');
+  strictEqual(suffixWithUnit(12345), '12.345 Kilo');
+  strictEqual(suffixWithUnit(1234567.545), '1.234567545 Mega');
+  strictEqual(suffixWithUnit(1234567.232), '1.234567232 Mega');
+  strictEqual(suffixWithUnit(1234567.2), '1.2345672 Mega');
+  strictEqual(suffixWithUnit(1234567), '1.234567 Mega');
+  strictEqual(suffixWithUnit(12345678), '12.345678 Mega');
 } catch (error) {
   console.log(error);
 }

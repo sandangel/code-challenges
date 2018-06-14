@@ -34,6 +34,9 @@ function convertToJSON_C(json_b: JB): JC[] {
 
         return [...prev, { message, signals }];
       }
+      
+      // case group > 2
+      member++;
 
       if (member >= group) {
         member = 1;

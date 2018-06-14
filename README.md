@@ -11,7 +11,7 @@ function suffixWithUnit(num: number): string {
   const floatPointPos = res.search(/\./);
 
   if (floatPointPos === -1) {
-    l = String(num).length;
+    l = res.length;
   } else {
     l = res.substring(0, floatPointPos).length;
   }

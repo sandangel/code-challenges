@@ -93,3 +93,100 @@ export const JSON_C = [
     }
   }
 ];
+
+export const JSON_C_G1 = [
+  {
+    message: 'rx_locker_1',
+    signals: { locker_1_door: 1, locker_1_item: 1 }
+  },
+  {
+    message: 'rx_locker_2',
+    signals: { locker_2_door: 1, locker_2_item: 2 }
+  },
+  {
+    message: 'rx_locker_3',
+    signals: { locker_3_door: 1, locker_3_item: 3 }
+  },
+  {
+    message: 'rx_locker_4',
+    signals: { locker_4_door: 1, locker_4_item: 0 }
+  },
+  {
+    message: 'rx_locker_5',
+    signals: { locker_5_door: 1, locker_5_item: 5 }
+  },
+  {
+    message: 'rx_locker_6',
+    signals: { locker_6_door: 1, locker_6_item: 1 }
+  }
+];
+
+export const JSON_C_G3 = [
+  {
+    message: 'rx_locker_123',
+    signals: {
+      locker_1_door: 1,
+      locker_1_item: 1,
+      locker_2_door: 1,
+      locker_2_item: 2,
+      locker_3_door: 1,
+      locker_3_item: 3
+    }
+  },
+  {
+    message: 'rx_locker_456',
+    signals: {
+      locker_4_door: 1,
+      locker_4_item: 0,
+      locker_5_door: 1,
+      locker_5_item: 5,
+      locker_6_door: 1,
+      locker_6_item: 1
+    }
+  }
+];
+
+export const JSON_C_G4 = [
+  {
+    message: 'rx_locker_1234',
+    signals: {
+      locker_1_door: 1,
+      locker_1_item: 1,
+      locker_2_door: 1,
+      locker_2_item: 2,
+      locker_3_door: 1,
+      locker_3_item: 3,
+      locker_4_door: 1,
+      locker_4_item: 0
+    }
+  },
+  {
+    message: 'rx_locker_56',
+    signals: {
+      locker_5_door: 1,
+      locker_5_item: 5,
+      locker_6_door: 1,
+      locker_6_item: 1
+    }
+  }
+];
+
+export const JSON_C_G6 = [
+  {
+    message: 'rx_locker_123456',
+    signals: {
+      locker_1_door: 1,
+      locker_1_item: 1,
+      locker_2_door: 1,
+      locker_2_item: 2,
+      locker_3_door: 1,
+      locker_3_item: 3,
+      locker_4_door: 1,
+      locker_4_item: 0,
+      locker_5_door: 1,
+      locker_5_item: 5,
+      locker_6_door: 1,
+      locker_6_item: 1
+    }
+  }
+];

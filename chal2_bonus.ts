@@ -1,4 +1,4 @@
-import { JSON_A, JSON_B, JSON_C } from './chal2_input';
+import { JSON_A, JSON_B, JSON_C, JSON_C_G1, JSON_C_G3, JSON_C_G4, JSON_C_G6 } from './chal2_input';
 import { deepStrictEqual, strictEqual } from 'assert';
 
 type Locker = { door: number; item: number; light: number; unlock: number; [key: string]: number };
@@ -20,26 +20,26 @@ function convertToJSON_B(json_a: JA): JB {
   return json_b;
 }
 
-function convertToJSON_C(json_b: JB): JC[] {
-  let group = 2;
-  let member = 1;
-  const props: ('door' | 'item' | 'light' | 'unlock')[] = ['door', 'item'];
+type PropType = 'door' | 'item' | 'light' | 'unlock';
+
+function convertToJSON_C(json_b: JB, groupMembers = 2, props: PropType[] = ['door', 'item']): JC[] {
+  let memberIndex = 0;
   return Object.keys(json_b).reduce(
     (prev, cur) => {
-      if (member === 1 || group === 1) {
-        member++;
+      if (memberIndex === 0 || groupMembers === 1) {
+        memberIndex++;
         const message = 'rx_locker_' + cur;
         const signals: JC['signals'] = {};
         props.forEach(prop => (signals[`locker_${cur}_${prop}`] = json_b[cur][prop]));
 
         return [...prev, { message, signals }];
       }
-      
-      // case group > 2
-      member++;
 
-      if (member >= group) {
-        member = 1;
+      // case groupMembers > 2
+      memberIndex++;
+
+      if (memberIndex >= groupMembers) {
+        memberIndex = 0;
       }
 
       const prevPos = prev.length - 1;
@@ -58,6 +58,11 @@ try {
 
   deepStrictEqual(json_b, JSON_B);
   strictEqual(JSON.stringify(json_c), JSON.stringify(JSON_C));
+
+  strictEqual(JSON.stringify(convertToJSON_C(JSON_B, 1)), JSON.stringify(JSON_C_G1));
+  strictEqual(JSON.stringify(convertToJSON_C(JSON_B, 3)), JSON.stringify(JSON_C_G3));
+  strictEqual(JSON.stringify(convertToJSON_C(JSON_B, 4)), JSON.stringify(JSON_C_G4));
+  strictEqual(JSON.stringify(convertToJSON_C(JSON_B, 6)), JSON.stringify(JSON_C_G6));
 } catch (error) {
   console.log(error);
 }
